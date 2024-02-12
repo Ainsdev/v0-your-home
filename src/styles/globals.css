@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --card: 0 0% 99%;
+    --ring: 229 100% 62%;
+    --input: 220 13% 91%;
+    --muted: 229 12% 86%;
+    --accent: 229 28% 85%;
+    --border: 220 13% 91%;
+    --popover: 0 0% 99%;
+    --primary: 229 100% 62%;
+    --secondary: 229 20% 90%;
+    --background: 229 57% 100%;
+    --foreground: 229 63% 4%;
+    --destructive: 3 100% 50%;
+    --card-foreground: 229 63% 3%;
+    --muted-foreground: 229 10% 37%;
+    --accent-foreground: 229 28% 25%;
+    --popover-foreground: 229 63% 3%;
+    --primary-foreground: 0 0% 100%;
+    --secondary-foreground: 229 20% 30%;
+    --destructive-foreground: 3 0% 100%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --card: 229 41% 5%;
+    --ring: 229 100% 62%;
+    --input: 215 27.9% 16.9%;
+    --muted: 229 12% 14%;
+    --accent: 229 23% 17%;
+    --border: 215 27.9% 16.9%;
+    --popover: 229 41% 5%;
+    --primary: 229 100% 62%;
+    --secondary: 229 14% 8%;
+    --background: 229 41% 4%;
+    --foreground: 229 23% 99%;
+    --destructive: 3 89% 54%;
+    --card-foreground: 0 0% 100%;
+    --muted-foreground: 229 10% 63%;
+    --accent-foreground: 229 23% 77%;
+    --popover-foreground: 0 0% 100%;
+    --primary-foreground: 0 0% 100%;
+    --secondary-foreground: 229 14% 68%;
+    --destructive-foreground: 0 0% 100%;
+  }
+}
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.animated-spinner {
+  transform-origin: center;
+  animation: loader-spin 0.75s step-end infinite;
+}
+@keyframes loader-spin {
+  8.3% {
+    transform: rotate(30deg);
+  }
+  16.6% {
+    transform: rotate(60deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  33.3% {
+    transform: rotate(120deg);
+  }
+  41.6% {
+    transform: rotate(150deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  58.3% {
+    transform: rotate(210deg);
+  }
+  66.6% {
+    transform: rotate(240deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  83.3% {
+    transform: rotate(300deg);
+  }
+  91.6% {
+    transform: rotate(330deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
