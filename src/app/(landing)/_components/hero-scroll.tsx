@@ -8,8 +8,8 @@ export function HeroScrollDemo() {
   return (
     <div className="flex flex-col overflow-hidden">
       <div className="flex gap-4 sm:gap-6 items-center justify-center pt-12">
-        <Button size="sm">HOLA</Button>
         <p className="text-lg font-semibold">The platform for rapid progress</p>
+        <Button size="sm">HOLA</Button>
       </div>
       <ContainerScroll
         users={users}

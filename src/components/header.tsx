@@ -2,6 +2,7 @@ import Link from "next/link";
 import { RocketIcon } from "@/components/icons";
 import { APP_TITLE } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
+import { type User } from "lucia";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { UserDropdown } from "@/app/(main)/_components/user-dropdown";
 
 const routes = [
   { name: "Home", href: "/" },
@@ -19,7 +21,7 @@ const routes = [
   },
 ] as const;
 
-export const Header = () => {
+export const Header = ({ user }: { user: User | null }) => {
   return (
     <header className="px-2 py-4 lg:py-6">
       <div className="container flex items-center gap-2 p-0">
@@ -61,9 +63,17 @@ export const Header = () => {
           ))}
         </nav>
         <div className="ml-auto">
-          <Button asChild variant={"secondary"}>
-            <Link href="/login">Login</Link>
-          </Button>
+          {user ? (
+            <UserDropdown
+              email={user.email ?? ""}
+              avatar={user.avatar}
+              className="ml-auto"
+            />
+          ) : (
+            <Button asChild variant={"secondary"}>
+              <Link href="/login">Login</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>
