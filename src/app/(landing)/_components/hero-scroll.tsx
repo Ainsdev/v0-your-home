@@ -3,27 +3,25 @@ import React from "react";
 import { ContainerScroll } from "./container-scroll-animation";
 import { Button } from "@/components/ui/button";
 
-
 export function HeroScrollDemo() {
   return (
     <div className="flex flex-col overflow-hidden">
-      <div className="flex gap-4 sm:gap-6 items-center justify-center pt-12">
-        <p className="text-lg font-semibold">The platform for rapid progress</p>
-        <Button size="sm">HOLA</Button>
-      </div>
+      
       <ContainerScroll
         users={users}
         titleComponent={
-          <>
+          <div className="flex flex-col items-center justify-center gap-4 pt-12 sm:gap-6">
+          <Button size='lg' className="drop-shadow-[0_20px_50px_rgba(15,_10,_255,_4.2)]">Buscar</Button>
             <h1 className="text-4xl font-semibold ">
               Encuentra arrendatario <br />
-              <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
-                A la Inversa
+              <span className="mt-1 text-4xl font-bold leading-none md:text-[6rem]">
+                En segundos
               </span>
             </h1>
-          </>
+          </div>
         }
       />
+      
     </div>
   );
 }

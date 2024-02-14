@@ -70,9 +70,14 @@ export const Header = ({ user }: { user: User | null }) => {
               className="ml-auto"
             />
           ) : (
-            <Button asChild variant={"secondary"}>
-              <Link href="/login">Login</Link>
-            </Button>
+            <div className="flex items-center justify-center gap-2">
+              <Button size="sm" variant="link">
+                Buscas Lugar?
+              </Button>
+              <Button asChild variant='secondary'>
+                <Link href="/login">Iniciar Sesion</Link>
+              </Button>
+            </div>
           )}
         </div>
       </div>

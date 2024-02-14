@@ -5,6 +5,7 @@ import React, { useRef } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 export const ContainerScroll = ({
   users,
@@ -51,7 +52,7 @@ export const ContainerScroll = ({
       ref={containerRef}
     >
       <div
-        className="py-40 w-full relative"
+        className="py-40 w-full relative pt-0"
         style={{
           perspective: "1000px",
         }}
@@ -109,7 +110,7 @@ export const Card = ({
       <div className="bg-foreground h-full w-full rounded-2xl grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 overflow-y-scroll p-4 ">
         {users.map((user, idx: number) => (
           <motion.div
-            key={`user-${idx}`}
+            key={`comuna-${idx}`}
             className="bg-card rounded-md cursor-pointer relative"
             style={{ translateY: translate }}
             whileHover={{
@@ -127,8 +128,11 @@ export const Card = ({
               width={200}
               height={200}
             />
-            <div className="p-4">
+            <div className="p-4 space-y-1">
               <h1 className="font-semibold text-sm">{user.name}</h1>
+              <Button size='icon' variant='outline'>
+                <ArrowRightIcon></ArrowRightIcon>
+              </Button>
             </div>
           </motion.div>
         ))}
