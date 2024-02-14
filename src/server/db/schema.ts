@@ -29,6 +29,9 @@ export const users = sqliteTable(
     avatar: text("avatar"),
     // user attributes-info
     rut: text("rut"),
+    birthdate: text("birthdate"),
+    country: text("country"),
+    phone: text("phone"),
   },
   (t) => ({
     emailIdx: index("email_idx").on(t.email),
@@ -46,7 +49,7 @@ export const sessions = sqliteTable(
     userId: text("user_id")
       .notNull()
       .references(() => users.id),
-      expiresAt: integer("expires_at").notNull()
+    expiresAt: integer("expires_at").notNull(),
   },
   (t) => ({
     userIdx: index("user_idx").on(t.userId),
@@ -84,9 +87,12 @@ export const posts = sqliteTable(
   {
     id: text("id").primaryKey(),
     userId: text("user_id").notNull(),
-    title: text("title").notNull(),
-    content: text("content").notNull(),
+    name: text("title").notNull(),
     status: text("status").notNull(),
+    country: text("country"),
+    city: text("city"),
+    communes: text("communes"), //array
+    verificationLevel: real("verification_level"),
     tags: text("tags"),
     createdAt: text("created_at")
       .notNull()
@@ -94,10 +100,21 @@ export const posts = sqliteTable(
     updatedAt: text("updated_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
+    // Atributes of the house the client is looking for
+    atributes: text("atributes", { mode: "json" }).notNull().$type<{
+      rooms: number;
+      bathrooms: number;
+      parking: number;
+      meters: number;
+      type: string;
+      price: number;
+      currency: string;
+    }>(),
   },
   (t) => ({
     userIdx: index("user_idx").on(t.userId),
     createdAtIdx: index("post_created_at_idx").on(t.createdAt),
+    atributesIdx: index("post_atributes_idx").on(t.atributes),
   }),
 );
 

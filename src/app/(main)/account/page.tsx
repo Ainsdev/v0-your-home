@@ -100,7 +100,7 @@ export default async function AccountPage() {
                   disabled={user.name ? true : false}
                   id="name"
                   placeholder="Coloca tu nombre aqui"
-                  value={user.name}
+                  value={user.name ?? undefined}
                 />
               </div>
               <div>
@@ -110,7 +110,7 @@ export default async function AccountPage() {
                 </label>
                 <Input
                   disabled={user.email ? true : false}
-                  value={user.email}
+                  value={user.email ?? undefined}
                   id="email"
                   placeholder="account@yourhome.cl"
                 />
