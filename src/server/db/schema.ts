@@ -1,11 +1,5 @@
 import { sql } from "drizzle-orm";
-import {
-  text,
-  index,
-  real,
-  integer,
-  sqliteTable,
-} from "drizzle-orm/sqlite-core";
+import { text, index, integer, sqliteTable } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm";
 
 export const users = sqliteTable(
@@ -25,10 +19,10 @@ export const users = sqliteTable(
     googleId: text("google_id"),
     username: text("username"),
     hashedPassword: text("hashed_password"),
-    verificationLevel: real("verification_level").notNull().default(0),
+    verificationLevel: integer("verification_level").notNull().default(0),
     avatar: text("avatar"),
     // user attributes-info
-    rut: text("rut"),
+    personalId: text("personalId"),
     birthdate: text("birthdate"),
     country: text("country"),
     phone: text("phone"),
@@ -85,36 +79,39 @@ export const passwordResetTokens = sqliteTable(
 export const posts = sqliteTable(
   "posts",
   {
-    id: text("id").primaryKey(),
+    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     userId: text("user_id").notNull(),
-    name: text("title").notNull(),
-    status: text("status").notNull(),
+    active: integer("status", { mode: "boolean" }).notNull().default(false),
+    name: text("title").notNull(), // Name of the person who is looking for a house
+    image: text("image"), // Image of the person who is looking for a house
     country: text("country"),
     city: text("city"),
     communes: text("communes"), //array
-    verificationLevel: real("verification_level"),
-    tags: text("tags"),
+    verificationLevel: integer("verification_level"),
+    tags: text("tags"), //array
+    aditionalInfo: text("aditional_info"),
+    showPhone: integer("show_phone", { mode: "boolean" }).notNull().default(false),
+    phone: text("phone"),
     createdAt: text("created_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
     updatedAt: text("updated_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
-    // Atributes of the house the client is looking for
-    atributes: text("atributes", { mode: "json" }).notNull().$type<{
-      rooms: number;
-      bathrooms: number;
-      parking: number;
-      meters: number;
-      type: string;
-      price: number;
-      currency: string;
-    }>(),
+    // Atributes of the house the client is looking for (filters)
+    rooms: text("rooms"), // 3-4
+    people: integer("people"),
+    bathrooms: text("bathrooms"), // 2-3
+    parking: integer("parking", { mode: "boolean" }),
+    meters: text("meters"), // 100-200
+    type: integer("type"), // 2 (house), 1 (apartment)
+    price: text("price"), // 100000-200000
+    costs: text("costs"), // 10000-20000
   },
   (t) => ({
     userIdx: index("user_idx").on(t.userId),
-    createdAtIdx: index("post_created_at_idx").on(t.createdAt),
-    atributesIdx: index("post_atributes_idx").on(t.atributes),
+    priceIdx: index("post_price_idx").on(t.price),
+    cityIdx: index("post_city_idx").on(t.city),
   }),
 );
 
@@ -124,3 +121,24 @@ export const postRelations = relations(posts, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+// This table is used to: send a Direct message to a post (ONLY ONE TIME) -> The user send an link,phone,email and message to the post owner
+export const messages = sqliteTable(
+  "messages",
+  {
+    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    postId: integer("post_id").notNull(),
+    userId: text("user_id").notNull(),
+    link: text("link"),
+    phone: integer("phone").notNull(),
+    email: text("email"),
+    message: text("message").notNull(),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+  },
+  (t) => ({
+    userIdx: index("user_idx").on(t.userId),
+    postIdx: index("post_idx").on(t.postId),
+  }),
+);

@@ -9,9 +9,9 @@ interface Props {
 }
 
 export default async function DashboardLayout({ children }: Props) {
-  const { user } = await validateRequest();
+  // const { user } = await validateRequest();
 
-  if (!user) redirect(redirects.toLogin);
+  // if (!user) redirect(redirects.toLogin);
 
   return (
     <div className="container flex min-h-[calc(100vh-180px)] flex-col gap-6 px-2 pt-6 md:flex-row md:px-4 lg:gap-10">

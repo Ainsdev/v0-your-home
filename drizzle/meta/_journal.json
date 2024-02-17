@@ -64,6 +64,20 @@
       "when": 1707692841789,
       "tag": "0008_sudden_quasar",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1708126409495,
+      "tag": "0009_futuristic_enchantress",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1708126454399,
+      "tag": "0010_premium_spitfire",
+      "breakpoints": true
     }
   ]
 }
