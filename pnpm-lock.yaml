@@ -95,6 +95,9 @@ dependencies:
   drizzle-orm:
     specifier: ^0.28.6
     version: 0.28.6(@libsql/client@0.4.3)(better-sqlite3@9.4.1)(mysql2@3.9.1)
+  drizzle-zod:
+    specifier: ^0.5.1
+    version: 0.5.1(drizzle-orm@0.28.6)(zod@3.22.4)
   framer-motion:
     specifier: ^11.0.3
     version: 11.0.5(react-dom@18.2.0)(react@18.2.0)
@@ -3883,6 +3886,16 @@ packages:
       '@libsql/client': 0.4.3
       better-sqlite3: 9.4.1
       mysql2: 3.9.1
+    dev: false
+
+  /drizzle-zod@0.5.1(drizzle-orm@0.28.6)(zod@3.22.4):
+    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
+    peerDependencies:
+      drizzle-orm: '>=0.23.13'
+      zod: '*'
+    dependencies:
+      drizzle-orm: 0.28.6(@libsql/client@0.4.3)(better-sqlite3@9.4.1)(mysql2@3.9.1)
+      zod: 3.22.4
     dev: false
 
   /eastasianwidth@0.2.0:

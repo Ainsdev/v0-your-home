@@ -11,6 +11,7 @@ export function HeroScrollDemo() {
         users={users}
         titleComponent={
           <div className="flex flex-col items-center justify-center gap-4 pt-12 sm:gap-6">
+            Seleccionar Comuna
           <Button size='lg' className="drop-shadow-[0_20px_50px_rgba(61,_97,_255,_0.8)]">Buscar</Button>
             <h1 className="text-4xl font-semibold ">
               Encuentra arrendatario <br />

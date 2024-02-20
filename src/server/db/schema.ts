@@ -1,6 +1,8 @@
 import { sql } from "drizzle-orm";
 import { text, index, integer, sqliteTable } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
 
 export const users = sqliteTable(
   "users",
@@ -81,16 +83,18 @@ export const posts = sqliteTable(
   {
     id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     userId: text("user_id").notNull(),
-    active: integer("status", { mode: "boolean" }).notNull().default(false),
+    active: integer("status", { mode: "boolean" }).notNull().default(true),
     name: text("title").notNull(), // Name of the person who is looking for a house
     image: text("image"), // Image of the person who is looking for a house
-    country: text("country"),
+    country: text("country").default("CL"),
     city: text("city"),
-    communes: text("communes"), //array
+    communes: integer("communes"), // 039 represents the commune of the selected city
     verificationLevel: integer("verification_level"),
     tags: text("tags"), //array
     aditionalInfo: text("aditional_info"),
-    showPhone: integer("show_phone", { mode: "boolean" }).notNull().default(false),
+    publicContact: integer("show_phone", { mode: "boolean" })
+      .notNull()
+      .default(false),
     phone: text("phone"),
     createdAt: text("created_at")
       .notNull()
@@ -122,6 +126,27 @@ export const postRelations = relations(posts, ({ one }) => ({
   }),
 }));
 
+export type Post = typeof posts.$inferSelect;
+
+export const PostSchema = createSelectSchema(posts, {
+  image: z.string().optional(),
+  city: z.string(),
+  communes: z
+    .number()
+    .max(5, { message: "Solo pueden ser un maximo de 5 comunas" })
+    .optional(),
+  tags: z.string().array().optional(),
+  publicContact: z.boolean(),
+  rooms: z.string(),
+  people: z.number(),
+  bathrooms: z.string(),
+  parking: z.boolean(),
+  meters: z.string(),
+  type: z.number(),
+  price: z.string(),
+  costs: z.string(),
+});
+
 // This table is used to: send a Direct message to a post (ONLY ONE TIME) -> The user send an link,phone,email and message to the post owner
 export const messages = sqliteTable(
   "messages",
@@ -142,3 +167,5 @@ export const messages = sqliteTable(
     postIdx: index("post_idx").on(t.postId),
   }),
 );
+
+export type Message = typeof messages.$inferSelect;
