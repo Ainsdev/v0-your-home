@@ -15,6 +15,7 @@ type SliderProps = {
   formatLabel?: (value: number) => string;
   value?: number[] | readonly number[];
   onValueChange?: (values: number[]) => void;
+  label?: string;
 };
 
 const SliderRange = React.forwardRef(

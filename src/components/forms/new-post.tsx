@@ -53,7 +53,7 @@ import { PostSchema } from "@/lib/validators/post";
 
 const FormSchema = PostSchema;
 
-export default function NewPostForm() { 
+export default function NewPostForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -236,23 +236,14 @@ export default function NewPostForm() {
                 <div className="flex items-center space-x-2">
                   <FormField
                     control={form.control}
-                    name="type"
+                    name="houseType"
                     render={({ field }) => (
                       <FormItem className="flex items-center space-x-2">
                         <FormLabel>Casa</FormLabel>
                         <FormControl>
                           <Checkbox
                             id="casa"
-                            onCheckedChange={(value) => {
-                              if (value && field.value === 11) {
-                                field.onChange(12);
-                              } else if (!value && field.value === 12) {
-                                field.onChange(10);
-                              }
-                              else {
-                                field.onChange(0);
-                              }
-                            }}
+                            onCheckedChange={(value) => field.onChange(value)}
                           />
                         </FormControl>
                         <FormMessage />
@@ -263,22 +254,14 @@ export default function NewPostForm() {
                 <div className="flex items-center space-x-2">
                   <FormField
                     control={form.control}
-                    name="type"
+                    name="apartamenetType"
                     render={({ field }) => (
                       <FormItem className="flex items-center space-x-2">
                         <FormLabel>Departamento</FormLabel>
                         <FormControl>
                           <Checkbox
                             id="dept"
-                            onCheckedChange={(value) => {
-                              if (value && field.value === 12) {
-                                field.onChange(11);
-                              } else if (!value && field.value === 11) {
-                                field.onChange(10);
-                              } else {
-                                field.onChange(0);
-                              }
-                            }}
+                            onCheckedChange={(value) => field.onChange(value)}
                           />
                         </FormControl>
                         <FormMessage />
@@ -303,9 +286,7 @@ export default function NewPostForm() {
                         max={10}
                         minStepsBetweenThumbs={1}
                         step={1}
-                        onValueChange={
-                          (value) => field.onChange(value)
-                        }
+                        onValueChange={(value) => field.onChange(value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -328,9 +309,7 @@ export default function NewPostForm() {
                         max={5}
                         minStepsBetweenThumbs={1}
                         step={1}
-                        onValueChange={
-                          (value) => field.onChange(value)
-                        }
+                        onValueChange={(value) => field.onChange(value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -346,43 +325,84 @@ export default function NewPostForm() {
                 </legend>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <div className="flex w-full flex-col justify-center gap-4 pt-4">
+                <div className="flex w-full flex-col justify-center gap-4 p-4">
                   <div className="flex items-center space-x-2">
                     <Label className="w-1/3" htmlFor="m2">
                       Metros Cuadrados
                     </Label>
-                    <SliderRange
-                      min={10}
-                      max={400}
-                      minStepsBetweenThumbs={10}
-                      step={10}
+                    <FormField
+                      control={form.control}
+                      name="meters"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormControl>
+                            <SliderRange
+                              min={10}
+                              max={400}
+                              minStepsBetweenThumbs={10}
+                              formatLabel={(value) => `${value}m²`}
+                              step={10}
+                              onValueChange={(value) => field.onChange(value)}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
-                  <div className="flex items-center space-x-2">
+                  {/* <div className="flex items-center space-x-2">
                     <Label htmlFor="year">Año de construccion</Label>
                     <Input
                       id="year"
                       placeholder="Ingrese el año de construccion"
                       type="number"
                     />
-                  </div>
+                  </div> */}
                   <div className="flex items-center space-x-2">
                     <Label className="w-1/3" htmlFor="parking">
                       Estacionamiento
                     </Label>
-                    <Checkbox id="parking" />
+                    <FormField
+                      control={form.control}
+                      name="parking"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Checkbox
+                              id="parking"
+                              onCheckedChange={(value) => field.onChange(value)}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  <div className="flex items-center space-x-2">
+                  {/* <div className="flex items-center space-x-2">
                     <Label className="w-1/3" htmlFor="storage">
                       Bodega
                     </Label>
                     <Checkbox id="storage" />
-                  </div>
+                  </div> */}
                   <div className="flex items-center space-x-2">
                     <Label className="w-1/3" htmlFor="furnished">
                       Amoblado
                     </Label>
-                    <Checkbox id="furnished" />
+                    <FormField
+                      control={form.control}
+                      name="furnished"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Checkbox
+                              id="furnished"
+                              onCheckedChange={(value) => field.onChange(value)}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>
               </CollapsibleContent>
@@ -401,36 +421,93 @@ export default function NewPostForm() {
               <Label className="w-1/3" htmlFor="price">
                 Precio
               </Label>
-              <div className="flex items-center space-x-2">
-                <Input
-                  id="price-min"
-                  placeholder="Precio minimo"
-                  type="number"
-                />
-                <span className="text-muted-foreground">-</span>
-                <Input
-                  id="price-max"
-                  placeholder="Precio maximo"
-                  type="number"
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="flex items-center space-x-2">
+                        <Input
+                          id="price-min"
+                          placeholder="15k"
+                          type="number"
+                          onChange={(e) => {
+                            field.onChange([e.target.value, field.value[1]]);
+                          }}
+                        />
+                        <span className="text-muted-foreground">-</span>
+                        <Input
+                          id="price-max"
+                          placeholder="250k"
+                          type="number"
+                          
+                          onChange={(e) => {
+                            field.onChange([field.value[0], e.target.value]);
+                          }}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <div className="flex items-center space-x-2">
               <Label className="w-1/3" htmlFor="additional-costs">
                 Gastos Comunes
               </Label>
               <div className="flex items-center space-x-2">
-                <Input id="price-min" placeholder="15k" type="number" />
-                <span className="text-muted-foreground">-</span>
-                <Input id="price-max" placeholder="250k" type="number" />
+                <FormField
+                  control={form.control}
+                  name="costs"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="flex items-center space-x-2">
+                          <Input
+                            id="costs-min"
+                            placeholder="15k"
+                            type="number"
+                            onChange={(e) => {
+                              field.onChange([e.target.value, field.value[1]]);
+                            }}
+                          />
+                          <span className="text-muted-foreground">-</span>
+                          <Input
+                            id="costs-max"
+                            placeholder="70k"
+                            type="number"
+                            onChange={(e) => {
+                              field.onChange([field.value[0], e.target.value]);
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
             <div className="flex items-center space-x-2">
               <Label htmlFor="other-details">Detalles Adicionales</Label>
-              <Textarea
-                className="min-h-[100px]"
-                id="other-details"
-                placeholder="Ingresa otros detalles que quieras mencionar"
+              <FormField
+                control={form.control}
+                name="aditionalInfo"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Textarea
+                        className="min-h-[100px]"
+                        id="other-details"
+                        placeholder="Ingresa otros detalles que quieras mencionar"
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
           </CardContent>
@@ -447,4 +524,3 @@ export default function NewPostForm() {
     </Form>
   );
 }
-
