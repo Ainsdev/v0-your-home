@@ -128,24 +128,7 @@ export const postRelations = relations(posts, ({ one }) => ({
 
 export type Post = typeof posts.$inferSelect;
 
-export const PostSchema = createSelectSchema(posts, {
-  image: z.string().optional(),
-  city: z.string(),
-  communes: z
-    .number()
-    .max(5, { message: "Solo pueden ser un maximo de 5 comunas" })
-    .optional(),
-  tags: z.string().array().optional(),
-  publicContact: z.boolean(),
-  rooms: z.string(),
-  people: z.number(),
-  bathrooms: z.string(),
-  parking: z.boolean(),
-  meters: z.string(),
-  type: z.number(),
-  price: z.string(),
-  costs: z.string(),
-});
+
 
 // This table is used to: send a Direct message to a post (ONLY ONE TIME) -> The user send an link,phone,email and message to the post owner
 export const messages = sqliteTable(

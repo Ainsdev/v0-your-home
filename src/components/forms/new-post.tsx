@@ -32,13 +32,12 @@ import {
 } from "@radix-ui/react-icons";
 import { regions } from "@/config/regions";
 import { SliderRange } from "../ui/slidler-range";
-import MultipleSelector from "../ui/multiple-selector";
 import { toast } from "sonner";
 import { Checkbox } from "../ui/checkbox";
-import { PostSchema } from "@/server/db/schema";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { type z } from "zod";
 import {
   Form,
   FormControl,
@@ -49,43 +48,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import React from "react";
+import { FancyMultiSelect } from "../ui/tag-input/multi-selec";
+import { PostSchema } from "@/lib/validators/post";
 
-interface Option {
-  value: string;
-  label: string;
-  disable?: boolean;
-  /** fixed option that can't be removed. */
-  fixed?: boolean;
-  /** Group the options by providing key. */
-  [key: string]: string | boolean | undefined;
-}
-const OPTIONS: Option[] = [
-  { label: "nextjs", value: "Nextjs" },
-  { label: "React", value: "react" },
-  { label: "Remix", value: "remix" },
-  { label: "Vite", value: "vite" },
-  { label: "Nuxt", value: "nuxt" },
-  { label: "Vue", value: "vue" },
-  { label: "Svelte", value: "svelte" },
-  { label: "Angular", value: "angular" },
-  { label: "Ember", value: "ember" },
-  { label: "Gatsby", value: "gatsby" },
-  { label: "Astro", value: "astro" },
-];
-// const FormSchema = PostSchema;
-const FormSchema = z.object({
-  publicContact: z.boolean(),
-  city: z.string().nonempty(),
-  tags: z.array(z.any()),
-});
+const FormSchema = PostSchema;
 
-export default function NewPostForm() {
+export default function NewPostForm() { 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       publicContact: true,
-      city: "",
-      tags: [],
     },
   });
   function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -95,12 +67,13 @@ export default function NewPostForm() {
       </pre>,
       {
         duration: 5000,
+        closeButton: true,
       },
     );
   }
   //states managment
   const [publicProfile, setPublicProfile] = React.useState(true);
-  const [region, setRegion] = React.useState("");
+  const [regionValue, setRegion] = React.useState("");
 
   return (
     <Form {...form}>
@@ -214,35 +187,32 @@ export default function NewPostForm() {
                       ))}
                     </SelectContent>
                   </Select>
-                  <FormDescription>
-                    You can manage email addresses in your{" "}
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="tags"
+              name="communes"
               render={({ field }) => (
-            <FormItem>
-              <FormLabel>Frameworks</FormLabel>
-              <FormControl>
-                <MultipleSelector
-                  value={field.value }
-                  onChange={field.onChange}
-                  defaultOptions={OPTIONS}
-                  placeholder="Select frameworks you like..."
-                  emptyIndicator={
-                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                      no results found.
-                    </p>
-                  }
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+                <FormItem>
+                  <FormLabel>Comunas</FormLabel>
+                  <FormControl>
+                    <FancyMultiSelect
+                      onChange={(value) => field.onChange(value)}
+                      max={4}
+                      data={
+                        regions.find((r) => r.region === regionValue)
+                          ?.comunas ?? []
+                      }
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Puedes seleccionar hasta 5 comunas.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
             <div className="grid gap-1.5">
               <Label htmlFor="city">Zona (Mapa)</Label>
@@ -264,22 +234,57 @@ export default function NewPostForm() {
               </legend>
               <div className="flex space-x-2 ">
                 <div className="flex items-center space-x-2">
-                  <Checkbox id="casa" />
-                  <label
-                    htmlFor="casa"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Casa
-                  </label>
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-2">
+                        <FormLabel>Casa</FormLabel>
+                        <FormControl>
+                          <Checkbox
+                            id="casa"
+                            onCheckedChange={(value) => {
+                              if (value && field.value === 11) {
+                                field.onChange(12);
+                              } else if (!value && field.value === 12) {
+                                field.onChange(10);
+                              }
+                              else {
+                                field.onChange(0);
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Checkbox id="departamento" />
-                  <label
-                    htmlFor="departamento"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Departamento
-                  </label>
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-2">
+                        <FormLabel>Departamento</FormLabel>
+                        <FormControl>
+                          <Checkbox
+                            id="dept"
+                            onCheckedChange={(value) => {
+                              if (value && field.value === 12) {
+                                field.onChange(11);
+                              } else if (!value && field.value === 11) {
+                                field.onChange(10);
+                              } else {
+                                field.onChange(0);
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </div>
             </div>
@@ -287,18 +292,51 @@ export default function NewPostForm() {
               <Label htmlFor="rooms" className="w-1/3">
                 Habitaciones
               </Label>
-              <SliderRange
-                min={0}
-                max={10}
-                minStepsBetweenThumbs={1}
-                step={1}
+              <FormField
+                control={form.control}
+                name="rooms"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <SliderRange
+                        min={0}
+                        max={10}
+                        minStepsBetweenThumbs={1}
+                        step={1}
+                        onValueChange={
+                          (value) => field.onChange(value)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
             <div className="flex items-center space-x-2">
               <Label className="w-1/3" htmlFor="bathrooms">
                 Baños
               </Label>
-              <SliderRange min={0} max={6} minStepsBetweenThumbs={1} step={1} />
+              <FormField
+                control={form.control}
+                name="bathrooms"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <SliderRange
+                        min={0}
+                        max={5}
+                        minStepsBetweenThumbs={1}
+                        step={1}
+                        onValueChange={
+                          (value) => field.onChange(value)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <Collapsible>
               <CollapsibleTrigger>
@@ -409,3 +447,4 @@ export default function NewPostForm() {
     </Form>
   );
 }
+
