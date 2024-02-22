@@ -94,7 +94,7 @@ export const posts = sqliteTable(
     aditionalInfo: text("aditional_info"),
     publicContact: integer("show_phone", { mode: "boolean" })
       .notNull()
-      .default(false),
+      .default(true),
     phone: text("phone"),
     createdAt: text("created_at")
       .notNull()
@@ -127,8 +127,6 @@ export const postRelations = relations(posts, ({ one }) => ({
 }));
 
 export type Post = typeof posts.$inferSelect;
-
-
 
 // This table is used to: send a Direct message to a post (ONLY ONE TIME) -> The user send an link,phone,email and message to the post owner
 export const messages = sqliteTable(

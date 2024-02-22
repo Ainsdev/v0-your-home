@@ -51,7 +51,6 @@ export function absoluteUrl(path: string) {
 //   }));
 // }
 
-
 //Function to convert 012 to in array ["a", "b", "c"]
 export function convertNumberToArray(number: string, list: string[]) {
   const digits = number.split("");
@@ -71,3 +70,14 @@ export function convertArrayToNumber(selectedArray: string[], list: string[]) {
 }
 
 //SELECT * FROM demo WHERE nname GLOB '*[4]'; -> THIS IS HOW  TO SELECT ALL ROWS WHERE nname CONTAINS 4
+
+export function currencyFormat(number: number) {
+  return new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  }).format(number);
+}
+
+export function formatCompact(value: number) {
+  return new Intl.NumberFormat("en-CL", { notation: "compact" }).format(value);
+}

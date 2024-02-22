@@ -50,6 +50,7 @@ import {
 import React from "react";
 import { FancyMultiSelect } from "../ui/tag-input/multi-selec";
 import { PostSchema } from "@/lib/validators/post";
+import { currencyFormat } from "@/lib/utils";
 
 const FormSchema = PostSchema;
 
@@ -434,6 +435,7 @@ export default function NewPostForm() {
                           type="number"
                           onChange={(e) => {
                             field.onChange([e.target.value, field.value[1]]);
+                            e.target.value = currencyFormat(Number(e.target.value))
                           }}
                         />
                         <span className="text-muted-foreground">-</span>
@@ -441,9 +443,9 @@ export default function NewPostForm() {
                           id="price-max"
                           placeholder="250k"
                           type="number"
-                          
                           onChange={(e) => {
                             field.onChange([field.value[0], e.target.value]);
+                            e.target.value = currencyFormat(Number(e.target.value))
                           }}
                         />
                       </div>
