@@ -50,7 +50,7 @@ import {
 import React from "react";
 import { FancyMultiSelect } from "../ui/tag-input/multi-selec";
 import { PostSchema } from "@/lib/validators/post";
-import { currencyFormat } from "@/lib/utils";
+import { currencyFormat, numberToClp } from "@/lib/utils";
 
 const FormSchema = PostSchema;
 
@@ -422,69 +422,98 @@ export default function NewPostForm() {
               <Label className="w-1/3" htmlFor="price">
                 Precio
               </Label>
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <div className="flex items-center space-x-2">
+              <div className="flex w-full items-center space-x-2">
+                <FormField
+                  control={form.control}
+                  name="minPrice"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
                         <Input
+                          {...field}
                           id="price-min"
-                          placeholder="15k"
-                          type="number"
+                          step={1000}
+                          placeholder="60k"
+                          type="text"
                           onChange={(e) => {
-                            field.onChange([e.target.value, field.value[1]]);
-                            e.target.value = currencyFormat(Number(e.target.value))
+                            e.target.value = numberToClp(e.target.value);
+                            field.onChange(e);
                           }}
                         />
-                        <span className="text-muted-foreground">-</span>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <span className="text-muted-foreground">-</span>
+                <FormField
+                  control={form.control}
+                  name="maxPrice"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
                         <Input
+                          {...field}
                           id="price-max"
-                          placeholder="250k"
-                          type="number"
+                          step={1000}
+                          placeholder="150k"
+                          type="text"
                           onChange={(e) => {
-                            field.onChange([field.value[0], e.target.value]);
-                            e.target.value = currencyFormat(Number(e.target.value))
+                            e.target.value = numberToClp(e.target.value);
+                            field.onChange(e);
                           }}
                         />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
             <div className="flex items-center space-x-2">
               <Label className="w-1/3" htmlFor="additional-costs">
                 Gastos Comunes
               </Label>
-              <div className="flex items-center space-x-2">
+
+              <div className="flex w-full items-center space-x-2">
                 <FormField
                   control={form.control}
-                  name="costs"
+                  name="minCost"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="w-full">
                       <FormControl>
-                        <div className="flex items-center space-x-2">
-                          <Input
-                            id="costs-min"
-                            placeholder="15k"
-                            type="number"
-                            onChange={(e) => {
-                              field.onChange([e.target.value, field.value[1]]);
-                            }}
-                          />
-                          <span className="text-muted-foreground">-</span>
-                          <Input
-                            id="costs-max"
-                            placeholder="70k"
-                            type="number"
-                            onChange={(e) => {
-                              field.onChange([field.value[0], e.target.value]);
-                            }}
-                          />
-                        </div>
+                        <Input
+                          id="cost-min"
+                          step={1000}
+                          placeholder="6k"
+                          type="text"
+                          onChange={(e) => {
+                            e.target.value = numberToClp(e.target.value);
+                            field.onChange(e);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <span className="text-muted-foreground">-</span>
+                <FormField
+                  control={form.control}
+                  name="maxCost"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <Input
+                          id="cost-max"
+                          step={1000}
+                          placeholder="15k"
+                          type="text"
+                          onChange={(e) => {
+                            e.target.value = numberToClp(e.target.value);
+                            field.onChange(e);
+                          }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

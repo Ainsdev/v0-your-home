@@ -21,7 +21,10 @@ export const PostSchema = z.object({
   meters: z.array(z.number()).default([50, 100]),
   apartamenetType: z.boolean().optional(),
   houseType: z.boolean().optional(),
-  price: z.array(z.number()).default([100000, 500000]),
-  costs: z.array(z.number()).default([10000, 70000]),
   aditionalInfo: z.string().optional(),
+  //The next values dont accept letters
+  maxPrice: z.string().min(1, { message: "Ingresa un valor" }),
+  minPrice: z.string().min(1, { message: "Ingresa un valor" }),
+  maxCost: z.string().min(1, { message: "Ingresa un valor" }),
+  minCost: z.string().min(1, { message: "Ingresa un valor" }),
 });
