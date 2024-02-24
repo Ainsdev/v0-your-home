@@ -50,7 +50,7 @@ import {
 import React from "react";
 import { FancyMultiSelect } from "../ui/tag-input/multi-selec";
 import { PostSchema } from "@/lib/validators/post";
-import { currencyFormat, numberToClp } from "@/lib/utils";
+import { numberToClp } from "@/lib/utils";
 
 const FormSchema = PostSchema;
 

@@ -16,11 +16,12 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { validateRequest } from "@/lib/auth/validate-request";
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
-  title: "Posts",
-  description: "Manage your posts here",
+  title: "Tus Publicaciones",
+  description: "Administra y crea tus publicaciones",
 };
 
 interface Props {
@@ -33,12 +34,9 @@ const schmea = z.object({
 });
 
 export default async function DashboardPage({ searchParams }: Props) {
-  const { page } = schmea.parse(searchParams);
+  // const { page } = schmea.parse(searchParams);
+  const { user } = await validateRequest();
 
-  // const [posts, subscriptionPlan] = await Promise.all([
-  //   api.post.myPosts.query({ page }),
-  //   api.stripe.getSubscriptionPlan.query(),
-  // ]);
 
   return (
     <div className="py-10 md:py-8">
@@ -50,7 +48,9 @@ export default async function DashboardPage({ searchParams }: Props) {
       </div>
       <Drawer>
         <DrawerTrigger>
-          <Button variant="default">Crear Publicacion</Button>
+          <Button
+          disabled={user?.verificationLevel == 0 || false}
+          variant="default">Crear Publicacion</Button>
         </DrawerTrigger>
         <DrawerContent className="max-h-[90vh] w-full">
           <DrawerHeader className="flex flex-col items-center justify-center">

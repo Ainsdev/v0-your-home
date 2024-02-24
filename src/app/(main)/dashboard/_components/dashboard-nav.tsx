@@ -8,18 +8,18 @@ import { cn } from "@/lib/utils";
 
 const items = [
   {
-    title: "Posts",
+    title: "Publicaciones",
     href: "/dashboard",
     icon: FileTextIcon,
   },
 
   {
-    title: "Billing",
+    title: "Mensajes",
     href: "/dashboard/billing",
     icon: CreditCard,
   },
   {
-    title: "Settings",
+    title: "Ajustes",
     href: "/dashboard/settings",
     icon: GearIcon,
   },

@@ -24,6 +24,7 @@ export const lucia = new Lucia(adapter, {
       updatedAt: attributes.updatedAt,
       verificationLevel: attributes.verificationLevel,
       name : attributes.name,
+      phone: attributes.phone,
     };
   },
   sessionCookie: {
