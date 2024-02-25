@@ -549,7 +549,7 @@ export default function NewPostForm() {
           type="submit"
           onClick={form.handleSubmit(onSubmit)}
         >
-          Publicar
+          Conseguir Lugar
         </Button>
       </form>
     </Form>

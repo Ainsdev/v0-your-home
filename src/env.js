@@ -19,6 +19,7 @@ export const env = createEnv({
     SMTP_PORT: z.number().int().min(1),
     SMTP_USER: z.string().trim().min(1),
     SMTP_PASSWORD: z.string().trim().min(1),
+    CLOUDINARY_CLOUD_NAME: z.string().min(1),
   },
 
   /**
@@ -47,6 +48,7 @@ export const env = createEnv({
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
 
     // Client-side env vars
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
