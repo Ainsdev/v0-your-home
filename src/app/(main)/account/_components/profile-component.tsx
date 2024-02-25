@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { User } from "lucia";
+import Link from "next/link";
 import { toast } from "sonner";
 
 export default function YourProfileComponent({ user }: { user: User }) {
@@ -31,8 +32,8 @@ export default function YourProfileComponent({ user }: { user: User }) {
             {user.name ? user.name[0] : user.email ? user.email[0] : "YH"}
           </AvatarFallback>
         </Avatar>
-        <Button onClick={clickButton} variant="outline">
-          Cambiar Imagen
+        <Button disabled onClick={clickButton} variant="outline">
+          Cambiar Imagen (Proximamente)
         </Button>
       </div>
       {/* <div className="space-y-4">
@@ -52,19 +53,22 @@ export default function YourProfileComponent({ user }: { user: User }) {
       <div
         className={cn(
           "mt-6 rounded-lg bg-card p-4",
-          user.verificationLevel == 0 &&
-            "animate-pulse bg-destructive ease-in-out hover:animate-none ",
+          user.verificationLevel == undefined &&
+            "bg-destructive/60 ease-in-out  ",
         )}
       >
         <div className="flex items-center justify-between">
           Nivel de verificacion
-          <Button variant="secondary">Subir Verificacion</Button>
-          {/* Si el nivel de verificacion es 0  que complet elos datos de abajo (#public-profile-header)*/}
+          <Button
+          // disabled={user.verificationLevel == undefined  }
+          variant="secondary" asChild>
+            <Link href="#initial-verification">Subir Verificacion</Link>
+            </Button>
         </div>
         <h3 className="mt-2 font-semibold">
-          {user.verificationLevel ? user.verificationLevel : "No Verificado"}
+          {user.verificationLevel ? "nivel " + user.verificationLevel : "No Verificado"}
         </h3>
-        <p className="text-sm">
+        <p className="text-sm text-muted-foreground">
           Verificate y Aparece primero en los resultados de busqueda.
         </p>
       </div>

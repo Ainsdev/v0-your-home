@@ -1,9 +1,8 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+
 import {
   Form,
   FormControl,
@@ -13,52 +12,44 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { formatterRut, validateRut } from "@/lib/utils";
+import { formatterRut } from "@/lib/utils";
 import { type User } from "lucia";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-
-const FormSchema = z.object({
-  name: z.string(),
-  rut: z.string().refine((v) => validateRut(v), { message: "Rut invalido" }),
-  email: z.string().email(),
-  phone: z.string().refine(
-    (v) => {
-      // Comprueba que el teléfono solo contenga números
-      const isNumeric = /^\d+$/.test(v);
-      // Comprueba que el teléfono no comience con "56" ni con "+56"
-      const doesNotStartWith56 = !/^(\+56)/.test(v);
-      return isNumeric && doesNotStartWith56;
-    },
-    {
-      message:
-        "No incluyas el +56, solo el numero",
-    },
-  ),
-});
+import { UserFormSchema } from "@/lib/validators/user";
+import { type z } from "zod";
+import React from "react";
+import { AnimatedSpinner } from "@/components/icons";
+import { basicVerification } from "@/app/_actions/verification";
 
 export default function UserForm({ user }: { user: User }) {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof UserFormSchema>>({
+    resolver: zodResolver(UserFormSchema),
     defaultValues: {
       email: user.email!,
+      name: user.name!,
+      phone: user.phone!,
     },
   });
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast(
-      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-      </pre>,
-      {
-        duration: 5000,
-        closeButton: true,
-      },
-    );
+  const [isPending, startTransition] = React.useTransition();
+
+  function onSubmit(data: z.infer<typeof UserFormSchema>) {
+    startTransition(async () => {
+      try {
+        await basicVerification(data)
+        toast.success("Datos guardados correctamente");
+      } catch (error) {
+        toast.error("No se pudo guardar los datos");
+      }
+    });
   }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="lg:col-span-2">
-        <section aria-labelledby="public-profile-header">
+        <section
+          id="initial-verification"
+          aria-labelledby="public-profile-header"
+        >
           <h2 className="mb-4 text-xl font-semibold" id="public-profile-header">
             Tus Datos
             <p className="text-xs text-muted-foreground">
@@ -76,6 +67,7 @@ export default function UserForm({ user }: { user: User }) {
                   <FormControl>
                     <Input
                       placeholder="Alfonso Cuadrado Valenzuela"
+                      disabled={user.name ? true : false}
                       {...field}
                     />
                   </FormControl>
@@ -116,6 +108,7 @@ export default function UserForm({ user }: { user: User }) {
                     <Input
                       {...field}
                       placeholder="11301789-3"
+                      disabled={user.personalId ? true : false}
                       onChange={(e) => {
                         e.target.value = formatterRut(e.target.value);
                         field.onChange(e);
@@ -148,12 +141,8 @@ export default function UserForm({ user }: { user: User }) {
                 </FormItem>
               )}
             />
-            <Button
-                disabled={!!user.personalId ?? false}
-                type="submit"
-                variant="default"
-            >
-                Guardar
+            <Button disabled={isPending} type="submit" variant="default">
+              {isPending ? <AnimatedSpinner /> : "Guardar"}
             </Button>
           </div>
         </section>

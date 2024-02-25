@@ -148,3 +148,27 @@ export const messages = sqliteTable(
 );
 
 export type Message = typeof messages.$inferSelect;
+
+//KYC VERIFICATION
+export const kycVerification = sqliteTable(
+  "kyc_verification",
+  {
+    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    verificationLevel: integer("verification_level").notNull().default(0),
+    passed: integer("status", { mode: "boolean" }).notNull().default(false),
+    onReview: integer("on_review", { mode: "boolean" }).notNull().default(false),
+    documents: text("documents"), //array
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: text("updated_at")
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+  },
+  (t) => ({
+    userIdx: index("user_idx").on(t.userId),
+  }),
+);
