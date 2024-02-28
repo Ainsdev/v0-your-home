@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "e44770c2-6701-41cb-8cf3-2a9bd12f5ac7",
+  "id": "91b7de74-f47b-4064-8688-0e657e184e9e",
   "prevId": "ea35150e-d5dc-4bf4-9436-77e17a4768ea",
   "tables": {
     "email_verification_codes": {
@@ -122,8 +122,8 @@
         }
       },
       "indexes": {
-        "user_idx": {
-          "name": "user_idx",
+        "user_kyc_idx": {
+          "name": "user_kyc_idx",
           "columns": [
             "user_id"
           ],
@@ -210,8 +210,8 @@
         }
       },
       "indexes": {
-        "user_idx": {
-          "name": "user_idx",
+        "user_messages_idx": {
+          "name": "user_messages_idx",
           "columns": [
             "user_id"
           ],
@@ -255,8 +255,8 @@
         }
       },
       "indexes": {
-        "user_idx": {
-          "name": "user_idx",
+        "user_password_idx": {
+          "name": "user_password_idx",
           "columns": [
             "user_id"
           ],
@@ -438,8 +438,8 @@
         }
       },
       "indexes": {
-        "user_idx": {
-          "name": "user_idx",
+        "user_posts_idx": {
+          "name": "user_posts_idx",
           "columns": [
             "user_id"
           ],

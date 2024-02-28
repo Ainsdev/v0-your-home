@@ -46,7 +46,7 @@ export const sessions = sqliteTable(
     expiresAt: integer("expires_at").notNull(),
   },
   (t) => ({
-    userIdx: index("user_idx").on(t.userId),
+    userIdx: index("user_idx").on(t.userId),  
   }),
 );
 
@@ -60,7 +60,7 @@ export const emailVerificationCodes = sqliteTable(
     expiresAt: integer("expiresAt", { mode: "timestamp" }),
   },
   (t) => ({
-    emailIdx: index("email_idx").on(t.email),
+    emailVerificationIdx: index("email_verification_idx").on(t.email),
   }),
 );
 
@@ -72,7 +72,7 @@ export const passwordResetTokens = sqliteTable(
     expiresAt: integer("expiresAt", { mode: "timestamp" }).notNull(),
   },
   (t) => ({
-    userIdx: index("user_idx").on(t.userId),
+    userPasswordIdx: index("user_password_idx").on(t.userId),
   }),
 );
 
@@ -85,7 +85,7 @@ export const posts = sqliteTable(
     name: text("title").notNull(), // Name of the person who is looking for a house
     image: text("image"), // Image of the person who is looking for a house
     country: text("country").default("CL"),
-    city: text("city"),
+    city: text("city").notNull(),
     communes: integer("communes"), // 039 represents the commune of the selected city
     verificationLevel: integer("verification_level"),
     tags: text("tags"), //array
@@ -111,8 +111,7 @@ export const posts = sqliteTable(
     costs: text("costs"), // 10000-20000
   },
   (t) => ({
-    userIdx: index("user_idx").on(t.userId),
-    priceIdx: index("post_price_idx").on(t.price),
+    userPostsIdx: index("user_posts_idx").on(t.userId),
     cityIdx: index("post_city_idx").on(t.city),
   }),
 );
@@ -142,7 +141,7 @@ export const messages = sqliteTable(
       .default(sql`CURRENT_TIMESTAMP`),
   },
   (t) => ({
-    userIdx: index("user_idx").on(t.userId),
+    userMsgIdx: index("user_messages_idx").on(t.userId),
     postIdx: index("post_idx").on(t.postId),
   }),
 );
@@ -169,6 +168,6 @@ export const kycVerification = sqliteTable(
       .default(sql`CURRENT_TIMESTAMP`),
   },
   (t) => ({
-    userIdx: index("user_idx").on(t.userId),
+    userKycIdx: index("user_kyc_idx").on(t.userId),
   }),
 );

@@ -6,17 +6,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { User } from "lucia";
 import Link from "next/link";
-import { toast } from "sonner";
 
 export default function YourProfileComponent({ user }: { user: User }) {
-  const clickButton = () => {
-    toast(
-      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        <code className="text-white">CODIGO NASHE</code>
-      </pre>,
-      { duration: 5000, icon: "👀" },
-    );
-  };
+  
   return (
     <section
       aria-labelledby="your-profile-header"
@@ -32,7 +24,7 @@ export default function YourProfileComponent({ user }: { user: User }) {
             {user.name ? user.name[0] : user.email ? user.email[0] : "YH"}
           </AvatarFallback>
         </Avatar>
-        <Button disabled onClick={clickButton} variant="outline">
+        <Button disabled variant="outline">
           Cambiar Imagen (Proximamente)
         </Button>
       </div>

@@ -2,6 +2,7 @@
 
 import { validateRequest } from "@/lib/auth/validate-request";
 import { delay } from "@/lib/security";
+import { formatDateForSQL } from "@/lib/utils";
 import { UserFormSchema } from "@/lib/validators/user";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
@@ -13,6 +14,7 @@ export const basicVerification = async (
   data: z.infer<typeof UserFormSchema>,
 ) => {
   const { user } = await validateRequest();
+  const date = new Date();
   try {
     if (!user) {
       throw new Error("No puedes realizar esta accion");
@@ -24,6 +26,7 @@ export const basicVerification = async (
         personalId: data.rut,
         name: data.name,
         phone: data.phone,
+        updatedAt: formatDateForSQL(date),
       })
       .where(eq(users.id, user.id));
     revalidatePath("/account");

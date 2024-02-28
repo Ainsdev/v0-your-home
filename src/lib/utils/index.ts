@@ -39,6 +39,29 @@ export function formatDate(
   }).format(new Date(date));
 }
 
+export function formatDateForSQL(date:Date) {
+  // Date Type returned: '2024-02-28 21:31:16'
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+export function parseSQLDate(dateString: string): Date {
+  if (!dateString) {
+    return new Date();
+  }
+  const [date, time] = dateString.split(' ') as [string, string];
+  const [year, month, day] = date.split('-').map(Number) as [number, number, number];
+  const [hours, minutes, seconds] = time.split(':').map(Number);
+  // Note: JavaScript's Date constructor uses 0-based months, so we subtract 1 from the month.
+  return new Date(year, month - 1, day, hours, minutes, seconds);
+}
+
+
 export function absoluteUrl(path: string) {
   return `${env.NEXT_PUBLIC_APP_URL}${path}`;
 }

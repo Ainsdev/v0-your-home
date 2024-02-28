@@ -12,7 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { formatterRut } from "@/lib/utils";
+import { formatterRut, parseSQLDate } from "@/lib/utils";
 import { type User } from "lucia";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -42,7 +42,12 @@ export default function UserForm({ user }: { user: User }) {
         toast.error("No se pudo guardar los datos");
       }
     });
-  }
+  } 
+
+  //Check if the date in updated at is more than 5 days from now
+  // const updatedAt = parseSQLDate(user.updatedAt); // -> Returns a Date 
+  // const now = new Date();
+  
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="lg:col-span-2">
@@ -141,7 +146,12 @@ export default function UserForm({ user }: { user: User }) {
                 </FormItem>
               )}
             />
-            <Button disabled={isPending} type="submit" variant="default">
+            <Button 
+            // Check if the user have changed the data at least for 5 days
+            disabled={isPending
+              // || (updatedAt && now.getTime() - updatedAt.getTime() < 432000000)
+            }
+             type="submit" variant="default">
               {isPending ? <AnimatedSpinner /> : "Guardar"}
             </Button>
           </div>

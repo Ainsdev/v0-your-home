@@ -10,6 +10,7 @@ CREATE TABLE `kyc_verification` (
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+DROP INDEX IF EXISTS `user_idx`;--> statement-breakpoint
 /*
  SQLite does not support "Set default to column" out of the box, we do not generate automatic migration for that, so it has to be done manually
  Please refer to: https://www.techonthenet.com/sqlite/tables/alter_table.php
@@ -26,4 +27,7 @@ CREATE TABLE `kyc_verification` (
 
  Due to that we don't generate migration automatically and it has to be done manually
 */--> statement-breakpoint
-CREATE INDEX `user_idx` ON `kyc_verification` (`user_id`);
+CREATE INDEX `user_kyc_idx` ON `kyc_verification` (`user_id`);--> statement-breakpoint
+CREATE INDEX `user_messages_idx` ON `messages` (`user_id`);--> statement-breakpoint
+CREATE INDEX `user_password_idx` ON `password_reset_tokens` (`user_id`);--> statement-breakpoint
+CREATE INDEX `user_posts_idx` ON `posts` (`user_id`);
