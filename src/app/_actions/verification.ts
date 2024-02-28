@@ -14,7 +14,7 @@ export const basicVerification = async (
 ) => {
   const { user } = await validateRequest();
   try {
-    if (!user || user.verificationLevel > 0) {
+    if (!user) {
       throw new Error("No puedes realizar esta accion");
     }
     await db

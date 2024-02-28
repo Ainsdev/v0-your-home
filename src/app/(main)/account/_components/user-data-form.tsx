@@ -36,7 +36,7 @@ export default function UserForm({ user }: { user: User }) {
   function onSubmit(data: z.infer<typeof UserFormSchema>) {
     startTransition(async () => {
       try {
-        await basicVerification(data)
+        await basicVerification(data);
         toast.success("Datos guardados correctamente");
       } catch (error) {
         toast.error("No se pudo guardar los datos");
