@@ -86,7 +86,7 @@ export const posts = sqliteTable(
     image: text("image"), // Image of the person who is looking for a house
     country: text("country").default("CL"),
     city: text("city").notNull(),
-    communes: integer("communes"), // 039 represents the commune of the selected city
+    communes: text("communes"), // 039 represents the commune of the selected city
     verificationLevel: integer("verification_level"),
     tags: text("tags"), //array
     aditionalInfo: text("aditional_info"),
@@ -106,7 +106,7 @@ export const posts = sqliteTable(
     bathrooms: text("bathrooms"), // 2-3
     parking: integer("parking", { mode: "boolean" }),
     meters: text("meters"), // 100-200
-    type: integer("type"), // 2 (house), 1 (apartment)
+    type: integer("type"), // 2 (house), 1 (apartment), both: 3
     price: text("price"), // 100000-200000
     costs: text("costs"), // 10000-20000
   },

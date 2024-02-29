@@ -39,7 +39,7 @@ export function formatDate(
   }).format(new Date(date));
 }
 
-export function formatDateForSQL(date:Date) {
+export function formatDateForSQL(date: Date) {
   // Date Type returned: '2024-02-28 21:31:16'
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -54,13 +54,16 @@ export function parseSQLDate(dateString: string): Date {
   if (!dateString) {
     return new Date();
   }
-  const [date, time] = dateString.split(' ') as [string, string];
-  const [year, month, day] = date.split('-').map(Number) as [number, number, number];
-  const [hours, minutes, seconds] = time.split(':').map(Number);
+  const [date, time] = dateString.split(" ") as [string, string];
+  const [year, month, day] = date.split("-").map(Number) as [
+    number,
+    number,
+    number,
+  ];
+  const [hours, minutes, seconds] = time.split(":").map(Number);
   // Note: JavaScript's Date constructor uses 0-based months, so we subtract 1 from the month.
   return new Date(year, month - 1, day, hours, minutes, seconds);
 }
-
 
 export function absoluteUrl(path: string) {
   return `${env.NEXT_PUBLIC_APP_URL}${path}`;
@@ -81,19 +84,20 @@ export function convertNumberToArray(number: string, list: string[]) {
   return convertedArray;
 }
 
-export function convertArrayToNumber(selectedArray: string[], list: string[]) {
-  const positions: number[] = [];
-  selectedArray.forEach((element) => {
-    const position = list.indexOf(element);
-    if (position !== -1) {
-      positions.push(position);
-    }
+// convert ["a", "b", "c"] to 012
+export function mapIndices(selectedList: string[], listAll: string[]): string {
+  // Create a map for faster lookup
+  const map = new Map<string, number>();
+  listAll.forEach((element, index) => {
+    map.set(element, index);
   });
-  return positions;
+  // Map elements of P to their indices in O
+  return selectedList.map((element) => map.get(element)).join("");
 }
 
 //SELECT * FROM demo WHERE nname GLOB '*[4]'; -> THIS IS HOW  TO SELECT ALL ROWS WHERE nname CONTAINS 4
 
+//OTHERS
 export function currencyFormat(number: string) {
   return new Intl.NumberFormat("es-CL", {
     style: "currency",
@@ -107,23 +111,25 @@ export function formatCompact(value: number) {
 
 export function formatterRut(rut: string): string {
   const actual = rut.toString().replace(/^0+/, "");
-  if (actual != '' && actual.length > 1) {
-      const sinPuntos = actual.replace(/\./g, "");
-      const actualLimpio = sinPuntos.replace(/-/g, "");
-      const inicio = actualLimpio.substring(0, actualLimpio.length - 1);
-      let rutPuntos = "";
-      let i = 0;
-      let j = 1;
-      for (i = inicio.length - 1; i >= 0; i--) {
-          const letra = !/^([0-9])*$/.test(inicio.charAt(i)) ? '' : inicio.charAt(i);
-          rutPuntos = letra + rutPuntos;
-          if (j % 3 == 0 && j <= inicio.length - 1) {
-              rutPuntos = "." + rutPuntos;
-          }
-          j++;
+  if (actual != "" && actual.length > 1) {
+    const sinPuntos = actual.replace(/\./g, "");
+    const actualLimpio = sinPuntos.replace(/-/g, "");
+    const inicio = actualLimpio.substring(0, actualLimpio.length - 1);
+    let rutPuntos = "";
+    let i = 0;
+    let j = 1;
+    for (i = inicio.length - 1; i >= 0; i--) {
+      const letra = !/^([0-9])*$/.test(inicio.charAt(i))
+        ? ""
+        : inicio.charAt(i);
+      rutPuntos = letra + rutPuntos;
+      if (j % 3 == 0 && j <= inicio.length - 1) {
+        rutPuntos = "." + rutPuntos;
       }
-      const dv = actualLimpio.substring(actualLimpio.length - 1);
-      return rutPuntos = rutPuntos + "-" + dv;
+      j++;
+    }
+    const dv = actualLimpio.substring(actualLimpio.length - 1);
+    return (rutPuntos = rutPuntos + "-" + dv);
   }
   return actual;
 }
@@ -131,27 +137,33 @@ export function formatterRut(rut: string): string {
 export function cleanRut(rut: string, withoutDv = false): string {
   const sinPuntos = rut.toString().replace(/\./g, "");
   const actualLimpio = sinPuntos.replace(/-/g, "");
-  return withoutDv ? actualLimpio : actualLimpio.substring(0, actualLimpio.length - 1);
+  return withoutDv
+    ? actualLimpio
+    : actualLimpio.substring(0, actualLimpio.length - 1);
 }
 
 export function validateRut(rut: string): boolean {
   if (!/^0*(\d{1,3}(\.?\d{3})*)-?([\dkK])$/.test(rut.toString())) {
-      return false
+    return false;
   }
-  rut = cleanRut(rut, true)
-  let t = parseInt(rut.slice(0, -1), 10)
-  let m = 0
-  let s = 1
+  rut = cleanRut(rut, true);
+  let t = parseInt(rut.slice(0, -1), 10);
+  let m = 0;
+  let s = 1;
   while (t > 0) {
-      s = (s + (t % 10) * (9 - m++ % 6)) % 11
-      t = Math.floor(t / 10)
+    s = (s + (t % 10) * (9 - (m++ % 6))) % 11;
+    t = Math.floor(t / 10);
   }
-  const v = s > 0 ? '' + (s - 1) : 'K'
-  return v === rut.slice(-1)
+  const v = s > 0 ? "" + (s - 1) : "K";
+  return v === rut.slice(-1);
 }
 
-export function numberToClp(monto: string, separator = ".", symbol = "$"): string {
-  const cleanValue = monto.replace(/\D/g, '');
+export function numberToClp(
+  monto: string,
+  separator = ".",
+  symbol = "$",
+): string {
+  const cleanValue = monto.replace(/\D/g, "");
   const valueConverted = cleanValue ? cleanValue.split("").reverse() : [];
   if (!cleanValue) return "";
   const length = valueConverted.length;
@@ -170,26 +182,25 @@ export function numberToClp(monto: string, separator = ".", symbol = "$"): strin
 
   if (sobr) {
     const valSobr = valueConverted.reverse().slice(0, sobr);
-    const point = length < 3 ? '' : separator;
-    finalValue = valSobr.join('') + point;
+    const point = length < 3 ? "" : separator;
+    finalValue = valSobr.join("") + point;
   } else {
-    array.push(valueConverted.reverse().slice(0, 3).join(''));
+    array.push(valueConverted.reverse().slice(0, 3).join(""));
   }
 
-  return `${symbol}${finalValue ? finalValue : ''}${array.reverse().join(separator)}`;
+  return `${symbol}${finalValue ? finalValue : ""}${array.reverse().join(separator)}`;
 }
 
 export function cleanClp(monto: string): string {
-  return monto.toString().replace(/\D/g, '');
+  return monto.toString().replace(/\D/g, "");
 }
 
 export function getRutDv(cleanRut: string): string {
   const newCleanRut = cleanRut.toString().split("").reverse().join("");
   let suma = 0;
-  for (let i = 0, j = 2; i < newCleanRut.length; i++, ((j === 7) ? j = 2 : j++)) {
-    suma += (parseInt(newCleanRut.charAt(i), 10) * j);
+  for (let i = 0, j = 2; i < newCleanRut.length; i++, j === 7 ? (j = 2) : j++) {
+    suma += parseInt(newCleanRut.charAt(i), 10) * j;
   }
   const n_dv = 11 - (suma % 11);
-  return ((n_dv === 11) ? "0" : ((n_dv === 10) ? "K" : n_dv.toString()));
+  return n_dv === 11 ? "0" : n_dv === 10 ? "K" : n_dv.toString();
 }
-
