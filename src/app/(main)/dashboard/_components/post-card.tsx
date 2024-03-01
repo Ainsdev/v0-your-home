@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { api } from "@/trpc/react";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
@@ -35,7 +35,6 @@ export const PostCard = ({
   userName,
 }: Props) => {
   const router = useRouter();
-  const postMutation = api.post.delete.useMutation();
   const [isDeletePending, startDeleteTransition] = React.useTransition();
 
   return (
@@ -65,7 +64,7 @@ export const PostCard = ({
           onClick={() => {
             startDeleteTransition(async () => {
               try {
-                await postMutation.mutateAsync({ id: postId });
+                // await postMutation.mutateAsync({ id: postId });
                 toast.success("Post deleted");
                 router.refresh();
               } catch (err) {

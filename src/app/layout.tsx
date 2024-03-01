@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     default: APP_TITLE,
     template: `%s | ${APP_TITLE}`,
   },
-  description: "Acme - Simple auth with lucia and trpc",
+  description: "YourHome",
   icons: [{ rel: "icon", url: "/icon.png" }],
 };
 
