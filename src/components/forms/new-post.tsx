@@ -51,6 +51,7 @@ import React from "react";
 import { FancyMultiSelect } from "../ui/tag-input/multi-selec";
 import { PostSchema } from "@/lib/validators/post";
 import { numberToClp } from "@/lib/utils";
+import { NewPostAction } from "@/app/_actions/post";
 
 const FormSchema = PostSchema;
 
@@ -59,23 +60,25 @@ export default function NewPostForm() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       publicContact: true,
+      apartamenetType: true,
     },
   });
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast(
-      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-      </pre>,
-      {
-        duration: 5000,
-        closeButton: true,
-      },
-    );
-  }
+  
   //states managment
   const [publicProfile, setPublicProfile] = React.useState(true);
   const [regionValue, setRegion] = React.useState("");
+  const [isPending, startTransition] = React.useTransition();
 
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    startTransition(async () => {
+      try {
+        await NewPostAction(data);
+        toast.success("Se ha publicado correctamente");
+      } catch (error) {
+        toast.error("Algo salio mal, revisa tus datos.");
+      }
+    });
+  }
   return (
     <Form {...form}>
       <form className="flex h-max w-full flex-col items-center gap-4 overflow-y-scroll p-2">
@@ -547,6 +550,7 @@ export default function NewPostForm() {
           className="w-max-5xl w-96 py-4 drop-shadow-[0_20px_50px_rgba(61,_97,_255,_0.2)]"
           variant="default"
           type="submit"
+          disabled={isPending}
           onClick={form.handleSubmit(onSubmit)}
         >
           Conseguir Lugar

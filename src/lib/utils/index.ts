@@ -96,6 +96,8 @@ export function mapIndices(selectedList: string[], listAll: string[]): string {
 }
 
 //SELECT * FROM demo WHERE nname GLOB '*[4]'; -> THIS IS HOW  TO SELECT ALL ROWS WHERE nname CONTAINS 4
+// SELECT * FROM demo WHERE cities LIKE '%3%'; <-- THIS ONE IS THE SAME BUT INCLUDING LEADING ZEROS
+
 
 //OTHERS
 export function currencyFormat(number: string) {

@@ -47,9 +47,9 @@ export default async function DashboardPage({ searchParams }: Props) {
         </p>
       </div>
       <Drawer>
-        <DrawerTrigger>
+        <DrawerTrigger disabled={user?.verificationLevel == 0 || !user?.phone}>
           <Button
-          disabled={user?.verificationLevel == 0 || false}
+disabled={user?.verificationLevel == 0 || !user?.phone}
           variant="default">Crear Publicacion</Button>
         </DrawerTrigger>
         <DrawerContent className="max-h-[90vh] w-full">

@@ -19,7 +19,7 @@ export const PostSchema = z
     bathrooms: z.array(z.number()).default([1, 2]),
     parking: z.boolean().optional(),
     furnished: z.boolean().optional(),
-    meters: z.array(z.number()).default([50, 100]),
+    meters: z.array(z.number()).default([50, 200]),
     apartamenetType: z.boolean().optional().default(true),
     houseType: z.boolean().optional(),
     aditionalInfo: z.string().optional(),
