@@ -1,11 +1,10 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-
-const nextConfig = {
+const config = {
     images: {
         domains: ["picsum.photos"],
       },
 };
 
-module.exports = nextConfig
+export default config;

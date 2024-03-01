@@ -1,3 +1,5 @@
+'use client'
+
 import { env } from "@/env";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
