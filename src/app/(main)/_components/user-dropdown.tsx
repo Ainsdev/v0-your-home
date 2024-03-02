@@ -86,7 +86,7 @@ const SignoutConfirmation = () => {
     setIsLoading(true);
     try {
       await logout();
-      toast("Signed out successfully");
+      toast("Sesion cerrada correctamente.");
     } catch (error) {
       if (error instanceof Error) {
         toast(error.message, {
@@ -107,23 +107,24 @@ const SignoutConfirmation = () => {
         className="px-2 py-1.5 text-sm text-muted-foreground outline-none"
         asChild
       >
-        <button>Sign out</button>
+        <button>Cerrar Sesion</button>
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-xs">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center">
-            Sign out from {APP_TITLE}?
+            Cerrar sesion {APP_TITLE}?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            You will be redirected to the home page.
+            ¿Estás seguro de que deseas cerrar tu sesión? Tu sesión actual se
+            cerrará y tendrás que iniciar sesión de nuevo.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-center">
           <Button variant="outline" onClick={() => setOpen(false)}>
-            Cancel
+            Cancelar
           </Button>
           <LoadingButton loading={isLoading} onClick={handleSignout}>
-            Continue
+            Continuar
           </LoadingButton>
         </div>
       </AlertDialogContent>

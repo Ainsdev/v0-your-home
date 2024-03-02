@@ -1,12 +1,11 @@
 import { type Metadata } from "next";
-import { NextjsLight, NextjsDark } from "./_components/feature-icons";
 import { HeroScrollDemo } from "./_components/hero-scroll";
 import { FeaturesComponent } from "./_components/features";
 
 export const metadata: Metadata = {
-  title: "Next.js Lucia Auth Starter Template",
+  title: "YourHome",
   description:
-    "A Next.js starter template with nextjs and Lucia auth. Includes drizzle, trpc, react-email, tailwindcss and shadcn-ui",
+    "La forma mas facil de encontrar arrendatario",
 };
 
 const HomePage = () => {
@@ -18,7 +17,6 @@ const HomePage = () => {
       <section id="features" className="w-full py-12 md:py-24 lg:py-32">
         <FeaturesComponent/>
       </section>
-
       <section className="w-full border-t py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -54,11 +52,3 @@ const HomePage = () => {
 
 export default HomePage;
 
-// function NextjsIcon({ className }: { className?: string }) {
-//   return (
-//     <>
-//       <NextjsLight className={className + " dark:hidden"} />
-//       <NextjsDark className={className + " hidden dark:block"} />
-//     </>
-//   );
-// }

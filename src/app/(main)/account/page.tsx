@@ -18,7 +18,7 @@ export default async function AccountPage() {
         <div>
           <YourProfileComponent user={user}></YourProfileComponent>
         </div>
-        <UserForm user={user} ></UserForm>
+        <UserForm user={user} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RocketIcon } from "@/components/icons";
+import { HamburgerMenuIcon, RocketIcon } from "@/components/icons";
 import { APP_TITLE } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { type User } from "lucia";
@@ -9,7 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { UserDropdown } from "@/app/(main)/_components/user-dropdown";
 
 const routes = [
@@ -19,7 +18,7 @@ const routes = [
     name: "Documentation",
     href: "https://www.touha.dev/posts/simple-nextjs-t3-authentication-with-lucia",
   },
-] as const;
+];
 
 export const Header = ({ user }: { user: User | null }) => {
   return (
@@ -49,7 +48,7 @@ export const Header = ({ user }: { user: User | null }) => {
           className="flex items-center justify-center text-xl font-medium"
           href="/"
         >
-          <RocketIcon className="mr-2 h-5 w-5" /> {APP_TITLE}
+          <RocketIcon className="mr-2 h-5 w-5" /> {APP_TITLE  }
         </Link>
         <nav className="ml-10 hidden gap-4 sm:gap-6 md:flex">
           {routes.map(({ name, href }) => (

@@ -10,15 +10,15 @@ export const Footer = () => {
       <div className="container flex items-center p-0">
         <CodeIcon className="mr-2 h-6 w-6" />
         <p className="text-sm">
-          Built by{" "}
+          Creado en{" "}
           <a className="underline underline-offset-4" href={twitterUrl}>
-            iamtouha
+            Chile
           </a>
-          . Get the source code from{" "}
+          . Ayudanos{" "}
           <a className="underline underline-offset-4" href={githubUrl}>
-            GitHub
+            Compartiendo{" "}
           </a>
-          .
+          con tu conocidos.
         </p>
         <div className="ml-auto">
           <ThemeToggle />

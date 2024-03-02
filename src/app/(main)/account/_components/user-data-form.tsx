@@ -12,7 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { formatterRut, parseSQLDate } from "@/lib/utils";
+import { formatterRut } from "@/lib/utils";
 import { type User } from "lucia";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
