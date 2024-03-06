@@ -1,5 +1,6 @@
 "use client";
 
+import { deletePostAction } from "@/app/_actions/post";
 import { Pencil2Icon, TrashIcon } from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,10 +19,10 @@ import * as React from "react";
 import { toast } from "sonner";
 
 interface Props {
-  postId: string;
+  postId: number;
   title: string;
   excerpt: string;
-  status: string;
+  status: boolean;
   userName?: string;
   createdAt: string;
 }
@@ -64,21 +65,21 @@ export const PostCard = ({
           onClick={() => {
             startDeleteTransition(async () => {
               try {
-                // await postMutation.mutateAsync({ id: postId });
-                toast.success("Post deleted");
+                await deletePostAction(postId);
+                toast.success("Post Eliminado");
                 router.refresh();
               } catch (err) {
-                toast.error("Failed to delete post");
+                toast.error("Algo salio mal");
               }
             });
           }}
           disabled={isDeletePending}
         >
           <TrashIcon className="h-5 w-5" />
-          <span className="sr-only">Delete</span>
+          <span className="sr-only">Eliminar</span>
         </Button>
         <Badge variant="outline" className="mr-auto rounded-lg capitalize">
-          {status} Post
+          {status ? "Activo" : "Innactivo"}
         </Badge>
       </CardFooter>
     </Card>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileTextIcon, CreditCard, GearIcon } from "@/components/icons";
+import { FileTextIcon, CreditCard } from "@/components/icons";
 
 import { cn } from "@/lib/utils";
 
@@ -17,12 +17,7 @@ const items = [
     title: "Mensajes",
     href: "/dashboard/billing",
     icon: CreditCard,
-  },
-  {
-    title: "Ajustes",
-    href: "/dashboard/settings",
-    icon: GearIcon,
-  },
+  }
 ];
 
 interface Props {

@@ -3,13 +3,24 @@
 import { regions } from "@/config/regions";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { delay } from "@/lib/security";
-import { cleanClp, formatDateForSQL, mapIndices } from "@/lib/utils";
+import { cleanClp, formatDateForSQL } from "@/lib/utils";
 import { setFromRange } from "@/lib/utils/slugify";
 import { type PostSchema } from "@/lib/validators/post";
 
 import { db } from "@/server/db";
 import { type Post, posts } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 import { type z } from "zod";
+
+function mapIndices(selectedList: string[], listAll: string[]): string {
+  // Create a map for faster lookup
+  const map = new Map<string, number>();
+  listAll.forEach((element, index) => {
+    map.set(element, index);
+  });
+  // Map elements of P to their indices in O
+  return selectedList.map((element) => map.get(element)).join("");
+}
 
 export const NewPostAction = async (data: z.infer<typeof PostSchema>) => {
   const { user } = await validateRequest();
@@ -49,6 +60,20 @@ export const NewPostAction = async (data: z.infer<typeof PostSchema>) => {
       updatedAt: formatDateForSQL(date),
     });
     console.log("POST DATA:", cleanedData);
+    return delay();
+  } catch (error) {
+    console.error("ERROR TYPE:", error);
+    throw new Error("No se pudo realizar la verificacion");
+  }
+};
+
+export const deletePostAction = async (id: number) => {
+  const { user } = await validateRequest();
+  try {
+    if (!user) {
+      throw new Error("No puedes realizar esta accion");
+    }
+    await db.delete(posts).where(eq(posts.id, id));
     return delay();
   } catch (error) {
     console.error("ERROR TYPE:", error);

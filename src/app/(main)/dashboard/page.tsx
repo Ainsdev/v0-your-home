@@ -17,6 +17,10 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { validateRequest } from "@/lib/auth/validate-request";
+import { db } from "@/server/db";
+import { posts } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
+import type { User } from "lucia";
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -34,9 +38,13 @@ const schmea = z.object({
 });
 
 export default async function DashboardPage({ searchParams }: Props) {
-  // const { page } = schmea.parse(searchParams);
-  const { user } = await validateRequest();
+  const { page } = schmea.parse(searchParams);
+  const { user } = (await validateRequest()) as { user: User };
 
+  const userPosts = await db
+    .select()
+    .from(posts)
+    .where(eq(posts.userId, user?.id));
 
   return (
     <div className="py-10 md:py-8">
@@ -49,8 +57,11 @@ export default async function DashboardPage({ searchParams }: Props) {
       <Drawer>
         <DrawerTrigger disabled={user?.verificationLevel == 0 || !user?.phone}>
           <Button
-disabled={user?.verificationLevel == 0 || !user?.phone}
-          variant="default">Crear Publicacion</Button>
+            disabled={user?.verificationLevel == 0 || !user?.phone}
+            variant="default"
+          >
+            Crear Publicacion
+          </Button>
         </DrawerTrigger>
         <DrawerContent className="max-h-[90vh] w-full">
           <DrawerHeader className="flex flex-col items-center justify-center">
@@ -65,17 +76,17 @@ disabled={user?.verificationLevel == 0 || !user?.phone}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {/* {posts.map((post) => (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 pt-10">
+        {userPosts.map((post) => (
           <PostCard
             key={post.id}
             postId={post.id}
-            title={post.title}
-            status={post.status}
-            createdAt={post.createdAt.toJSON()}
-            excerpt={post.excerpt}
+            title={post.city}
+            status={post.active}
+            createdAt={post.createdAt}
+            excerpt={post.name}
           />
-        ))} */}
+        ))}
       </div>
     </div>
   );
