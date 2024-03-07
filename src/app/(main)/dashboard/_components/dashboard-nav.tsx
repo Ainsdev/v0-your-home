@@ -15,7 +15,7 @@ const items = [
 
   {
     title: "Mensajes",
-    href: "/dashboard/billing",
+    href: "/dashboard/messages",
     icon: CreditCard,
   }
 ];

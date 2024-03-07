@@ -84,7 +84,7 @@ export default async function DashboardPage({ searchParams }: Props) {
             title={post.city}
             status={post.active}
             createdAt={post.createdAt}
-            excerpt={post.name}
+            excerpt={post.price!}
           />
         ))}
       </div>

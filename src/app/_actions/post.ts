@@ -3,13 +3,14 @@
 import { regions } from "@/config/regions";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { delay } from "@/lib/security";
-import { cleanClp, formatDateForSQL } from "@/lib/utils";
+
 import { setFromRange } from "@/lib/utils/slugify";
 import { type PostSchema } from "@/lib/validators/post";
 
 import { db } from "@/server/db";
 import { type Post, posts } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { type z } from "zod";
 
 function mapIndices(selectedList: string[], listAll: string[]): string {
@@ -20,6 +21,19 @@ function mapIndices(selectedList: string[], listAll: string[]): string {
   });
   // Map elements of P to their indices in O
   return selectedList.map((element) => map.get(element)).join("");
+}
+function cleanClp(monto: string): string {
+  return monto.toString().replace(/\D/g, "");
+}
+ function formatDateForSQL(date: Date) {
+  // Date Type returned: '2024-02-28 21:31:16'
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 export const NewPostAction = async (data: z.infer<typeof PostSchema>) => {
@@ -59,7 +73,7 @@ export const NewPostAction = async (data: z.infer<typeof PostSchema>) => {
       ...cleanedData,
       updatedAt: formatDateForSQL(date),
     });
-    console.log("POST DATA:", cleanedData);
+    revalidatePath("/dashboard");
     return delay();
   } catch (error) {
     console.error("ERROR TYPE:", error);
